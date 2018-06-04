@@ -2,6 +2,7 @@ package com.example.sain.guessthecelebrity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -96,13 +97,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        Button button = (Button) view;
-        if (button.getTag().equals("1")) {
+        if (view.getTag().equals("1")) {
             Toast.makeText(this, "Correct :)", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Incorrect :)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Incorrect :(", Toast.LENGTH_SHORT).show();
         }
 
-        setQuestion();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setQuestion();
+            }
+        }, 1500);
     }
 }
