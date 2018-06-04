@@ -1,11 +1,17 @@
 package com.example.sain.guessthecelebrity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initialise();
+        setQuestion();
     }
 
     private void initialise() {
@@ -47,6 +54,55 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setQuestion() {
+        Random random = new Random();
+        int position = random.nextInt(25);
+
+        DownloadImage downloadImage = new DownloadImage();
+        Bitmap bitmap = null;
+        try {
+            bitmap = downloadImage.execute(hashMap.get(arrayList.get(position))).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setImageBitmap(bitmap);
+
+        LinearLayout linearLayout = findViewById(R.id.linearLayout);
+
+        Button buttonOption;
+        int option;
+
+        int correctOption = random.nextInt(4);
+        ArrayList<Integer> optionArrayList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++) {
+            buttonOption = (Button) linearLayout.getChildAt(i);
+
+            if (i == correctOption) {
+                buttonOption.setText(arrayList.get(position));
+                buttonOption.setTag("1");
+            } else {
+                do {
+                    option = random.nextInt(25);
+                }
+                while (option == position || optionArrayList.contains(option));
+                optionArrayList.add(option);
+                buttonOption.setText(arrayList.get(option));
+                buttonOption.setTag("0");
+            }
+        }
+    }
+
     public void onClick(View view) {
+        Button button = (Button) view;
+        if (button.getTag().equals("1")) {
+            Toast.makeText(this, "Correct :)", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Incorrect :)", Toast.LENGTH_SHORT).show();
+        }
+
+        setQuestion();
     }
 }
