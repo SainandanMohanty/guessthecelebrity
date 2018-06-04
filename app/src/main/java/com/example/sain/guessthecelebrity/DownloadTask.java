@@ -26,8 +26,6 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
             }
 
             return result;
-
-
         } catch (Exception e) {
             e.printStackTrace();
             return null;
