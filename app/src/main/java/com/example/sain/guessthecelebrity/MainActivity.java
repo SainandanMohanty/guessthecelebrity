@@ -26,20 +26,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initialise();
+        ArrayList<String> urlArrayList = new ArrayList<>();
+        urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/");
+        urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/2/");
+        urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/3/");
+        urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/4/");
+
+        initialise(urlArrayList);
         setQuestion();
     }
 
-    private void initialise() {
+    private void initialise(ArrayList<String> urlArrayList) {
         String html = "";
-        String url = "https://www.therichest.com/top-lists/top-100-richest-celebrities/";
 
-        DownloadTask downloadTask = new DownloadTask();
+        for (String url : urlArrayList) {
+            DownloadTask downloadTask = new DownloadTask();
 
-        try {
-            html = downloadTask.execute(url).get();
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                html = html.concat(downloadTask.execute(url).get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         Pattern patternName = Pattern.compile("<div class=\"list-profile-name\">\\n(.*)\\n</div>");
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setQuestion() {
         Random random = new Random();
-        int position = random.nextInt(25);
+        int position = random.nextInt(100);
 
         DownloadImage downloadImage = new DownloadImage();
         Bitmap bitmap = null;
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 buttonOption.setTag("1");
             } else {
                 do {
-                    option = random.nextInt(25);
+                    option = random.nextInt(100);
                 }
                 while (option == position || optionArrayList.contains(option));
                 optionArrayList.add(option);
