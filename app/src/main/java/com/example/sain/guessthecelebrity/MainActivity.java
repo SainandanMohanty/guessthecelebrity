@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setImageBitmap(bitmap);
+        imageView.setTag(arrayList.get(position));
 
         LinearLayout linearLayout = findViewById(R.id.linearLayout);
 
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 buttonOption.setTag("1");
             } else {
                 do {
-                    option = random.nextInt(100);
+                    option = random.nextInt(arrayList.size());
                 }
                 while (option == position || optionArrayList.contains(option));
                 optionArrayList.add(option);
@@ -104,10 +105,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
+        ImageView imageView = findViewById(R.id.imageView);
+
         if (view.getTag().equals("1")) {
-            Toast.makeText(this, "Correct :)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Correct!!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Incorrect :(", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, String.format("Wrong, it's %s", imageView.getTag().toString()), Toast.LENGTH_SHORT).show();
         }
 
         Handler handler = new Handler();
