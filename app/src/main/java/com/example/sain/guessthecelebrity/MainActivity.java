@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> urlArrayList = new ArrayList<>();
         urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/");
-        urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/2/");
         urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/3/");
         urlArrayList.add("https://www.therichest.com/top-lists/top-100-richest-celebrities/page/4/");
 
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
         Matcher matcherLink = patternLink.matcher(html);
 
         while (matcherName.find() && matcherLink.find()) {
+            Log.i("qwertyuiop", matcherName.group(1));
+            Log.i("qwertyuiop", matcherLink.group(1));
+
             arrayList.add(matcherName.group(1));
             hashMap.put(matcherName.group(1), matcherLink.group(1));
         }
